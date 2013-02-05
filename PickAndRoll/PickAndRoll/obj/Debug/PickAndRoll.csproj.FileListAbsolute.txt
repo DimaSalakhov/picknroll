@@ -1,0 +1,8 @@
+D:\Dropbox\Dropbox\Projects\PickNRoll\PickAndRoll\PickAndRoll\bin\Debug\PickAndRoll.exe.config
+d:\Dropbox\Dropbox\Projects\PickNRoll\PickAndRoll\PickAndRoll\bin\Debug\PickAndRoll.exe
+d:\Dropbox\Dropbox\Projects\PickNRoll\PickAndRoll\PickAndRoll\bin\Debug\PickAndRoll.pdb
+d:\Dropbox\Dropbox\Projects\PickNRoll\PickAndRoll\PickAndRoll\obj\Debug\PickAndRoll.csprojResolveAssemblyReference.cache
+d:\Dropbox\Dropbox\Projects\PickNRoll\PickAndRoll\PickAndRoll\obj\Debug\PickAndRoll.exe
+d:\Dropbox\Dropbox\Projects\PickNRoll\PickAndRoll\PickAndRoll\obj\Debug\PickAndRoll.pdb
+d:\Dropbox\Dropbox\Projects\PickNRoll\PickAndRoll\PickAndRoll\bin\Debug\JsonFx.dll
+d:\Dropbox\Dropbox\Projects\PickNRoll\PickAndRoll\PickAndRoll\bin\Debug\JsonFx.xml
