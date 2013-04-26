@@ -1,4 +1,4 @@
 picknroll
 =========
 
-Utility for agile configuring .net projects
+Utility for agile configuring projects
