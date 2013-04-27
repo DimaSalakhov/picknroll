@@ -1,16 +1,25 @@
 require 'json'
+require 'hash_deep_merge'
+#require 'awesome_print'
 
 class PickAndRoll
-	def initialize(config_path = 'config.json')
-    @config_file = config_path
+  MASTER_CONFIG = 'config.json'
+
+	def initialize(config_path = '')
+    @config_file = config_path.to_s
   end
 
   def pick
-    if File.exists?(@config_file) == false
-      printf 'Please set configuration path or create config.json file'
-      return
+    @config = File.exist?(MASTER_CONFIG) ? JSON.parse(File.read(MASTER_CONFIG)) : Hash.new
+
+    if File.exists?("#{@config_file}.json")
+      @config.deep_merge!(JSON.parse(File.read("#{@config_file}.json")))
     end
-    @config = JSON.parse(IO.read(@config_file))
+
+    if @config.empty?
+      printf 'Please set configuration path or create config.json file'
+      exit
+    end
   end
 
   def roll
@@ -32,5 +41,22 @@ class PickAndRoll
   def build
     pick
     roll
+  end
+end
+
+class Hash
+  def can_recursively_merge? other
+    Hash === other
+  end
+
+  def recursive_merge! other
+    other.each do |key, value|
+      if self.include? key and self[key].can_recursively_merge? value
+        self[key].recursive_merge! value
+      else
+        self[key] = value
+      end
+    end
+    self
   end
 end
