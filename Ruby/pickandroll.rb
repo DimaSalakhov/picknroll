@@ -1,9 +1,10 @@
 require 'json'
 require 'hash_deep_merge'
-#require 'awesome_print'
+require 'awesome_print'
 
 class PickAndRoll
   MASTER_CONFIG = 'config.json'
+  PARCONFIG_FILE_NAME = '.parconfig'
 
 	def initialize(config_path = '')
     @config_file = config_path.to_s
@@ -23,40 +24,36 @@ class PickAndRoll
   end
 
   def roll
-    file_names = ['config.generic.xml']
+    file_patterns = read_file_patterns()
 
-    file_names.each do |file_name|
-      File.open(file_name,"r"){ |generic_config|
-        File.open(file_name.gsub(/\.generic\./,'.'), "w"){ |f|
-          f.write generic_config.read().gsub(/@@([\w\.]*)@@/) {|s| find_config_value $1}
+    file_patterns.each {|file_pattern|
+      Dir.glob("**/#{file_pattern}"){ |file_name|
+        File.open(file_name,'r'){ |config_file|
+          File.open(file_name.gsub(/\.generic\./,'.'), 'w'){ |f|
+            f.write config_file.read().gsub(/@@([\w\.]*)@@/) {|s| find_config_value $1}
+          }
         }
       }
+    }
+  end
+
+  def read_file_patterns
+    file_patterns = Array.new
+    if File.exist?(PARCONFIG_FILE_NAME)
+      File.open(PARCONFIG_FILE_NAME, 'r').each { |line|
+        file_patterns.push(line.strip)
+      }
     end
+
+    file_patterns
   end
 
   def find_config_value(key)
-    key.split('.').inject(@config) { |config, key| config[key] }
+    key.split('.').inject(@config) { |config, name| config[name] }
   end
 
   def build
     pick
     roll
-  end
-end
-
-class Hash
-  def can_recursively_merge? other
-    Hash === other
-  end
-
-  def recursive_merge! other
-    other.each do |key, value|
-      if self.include? key and self[key].can_recursively_merge? value
-        self[key].recursive_merge! value
-      else
-        self[key] = value
-      end
-    end
-    self
   end
 end

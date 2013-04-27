@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <packages>
+    <package id="Moq" version="@@moq.version@@" />
+    <package id="xunit" version="@@xunit.version@@" />
+  </packages>
+</configuration>

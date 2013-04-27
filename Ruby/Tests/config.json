@@ -1,4 +1,5 @@
 {
-    "first":{"firstname":"dima", "lastname":"salakhov"},
-    "second":"2"
+    "xunit":{"version":"2.3.0", "build":"stable"},
+    "moq":{"version":"3.0.0"},
+    "email" : "to@dimasalakhov.com"
 }
