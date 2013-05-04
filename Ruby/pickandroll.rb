@@ -1,6 +1,6 @@
 require 'json'
 require 'hash_deep_merge'
-require 'awesome_print'
+#require 'awesome_print'
 
 class PickAndRoll
   MASTER_CONFIG = 'config.json'
