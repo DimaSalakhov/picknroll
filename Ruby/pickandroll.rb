@@ -13,8 +13,10 @@ class PickAndRoll
   def pick
     @config = File.exist?(MASTER_CONFIG) ? JSON.parse(File.read(MASTER_CONFIG)) : Hash.new
 
-    if File.exists?("#{@config_file}.json")
+    if @config_file.strip.empty? == false && File.exists?("#{@config_file}.json")
       @config.deep_merge!(JSON.parse(File.read("#{@config_file}.json")))
+    elsif File.exist?("#{ENV["COMPUTERNAME"]}.json")
+      @config.deep_merge!(JSON.parse(File.read("#{ENV["COMPUTERNAME"]}.json")))
     end
 
     if @config.empty?

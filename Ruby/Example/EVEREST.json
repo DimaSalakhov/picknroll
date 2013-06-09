@@ -1,0 +1,7 @@
+{
+    "xunit" : {"version" : "21.3.1"},
+    "app" : {
+        "sku" : "sku-from-everest",
+        "path" : "c:/robots-from-everest.txt"
+    }
+}
