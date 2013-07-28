@@ -62,7 +62,7 @@ class PickAndRoll
     key.split('.').inject(@config) { |config, name| config[name] }
   end
 
-  def build
+  def go
     pick
     roll
   end
