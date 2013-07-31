@@ -1,4 +1,4 @@
-require '../pickandroll'
+require 'pick_and_roll'
 
 puts 'This should produce configs'
 
