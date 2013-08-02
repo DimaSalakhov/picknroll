@@ -7,13 +7,15 @@ class PickAndRoll
   PARCONFIG_FILE_NAME = '.parconfig'
 
 	def initialize(config_path = '')
+    @parconfig = read_configuration
     @config_file = config_path.to_s
   end
 
   def pick
-    if File.exist?(MASTER_CONFIG)
-      @config = JSON.parse(File.read(MASTER_CONFIG))
-      puts "pick config: #{MASTER_CONFIG}"
+    master_config_name = @parconfig.has_key?('config') ? @parconfig['config'] : MASTER_CONFIG
+    if File.exist?(master_config_name)
+      @config = JSON.parse(File.read(master_config_name))
+      puts "pick config: #{master_config_name}"
     else
       @config = Hash.new
     end
@@ -33,7 +35,7 @@ class PickAndRoll
   end
 
   def roll
-    file_patterns = read_file_patterns()
+    file_patterns = get_file_patterns()
 
     file_patterns.each {|file_pattern|
       Dir.glob("**/#{file_pattern}"){ |file_name|
@@ -47,15 +49,17 @@ class PickAndRoll
     }
   end
 
-  def read_file_patterns
-    file_patterns = Array.new
+  def get_file_patterns
+    @parconfig.has_key?('files') ? @parconfig['files'] : Array.new
+  end
+
+  def read_configuration
+    result = Hash.new
     if File.exist?(PARCONFIG_FILE_NAME)
-      File.open(PARCONFIG_FILE_NAME, 'r').each { |line|
-        file_patterns.push(line.strip)
-      }
+      result = JSON.parse(File.read(PARCONFIG_FILE_NAME))
     end
 
-    file_patterns
+    result
   end
 
   def find_config_value(key)
