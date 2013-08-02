@@ -1,2 +1,10 @@
-*.generic.xml
-*.generic.config
+{
+    "config": "config.json",
+    "customDir": "custom",
+    "files": [
+        "*.generic.xml",
+        "*.generic.config"
+    ]
+}
+
+

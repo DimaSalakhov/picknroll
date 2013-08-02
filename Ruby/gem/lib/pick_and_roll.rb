@@ -23,10 +23,17 @@ class PickAndRoll
     if @config_file.strip.empty? == false && File.exists?("#{@config_file}.json")
       @config.deep_merge!(JSON.parse(File.read("#{@config_file}.json")))
       puts "pick config: #{@config_file}.json"
-    elsif File.exist?("#{ENV["COMPUTERNAME"]}.json")
-      @config.deep_merge!(JSON.parse(File.read("#{ENV["COMPUTERNAME"]}.json")))
-      puts "pick config: #{ENV["COMPUTERNAME"]}.json"
+    else
+      custom_config = "#{ENV["COMPUTERNAME"]}.json"
+      if @parconfig.has_key?('customDir')
+        custom_config = File.join(@parconfig['customDir'], custom_config)
+      end
+      if File.exist?(custom_config)
+        @config.deep_merge!(JSON.parse(File.read(custom_config)))
+        puts "pick config: #{custom_config}"
+      end
     end
+
 
     if @config.empty?
       printf 'Please set configuration path or create config.json file'
