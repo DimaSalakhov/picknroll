@@ -7,9 +7,37 @@ Gem: <http://rubygems.org/gems/pick_and_roll>
 `gem install pick_and_roll`
 
 ## The problem ##
-You may end up with the situation when you need different configurations for different circumstances which are the same in general, but differ in some parameters like connection string.
+When you deal with the project with more than one developer/environment, you may end up with the situation when you need different config files for different circumstances which are the same in general, but differ in some parameters like connection string.
 
-In that situation to do not repead parameters it's appropriate to split general parameters in one file and specific settings in number of separate ones, different file for each settings' collection.
+In that situation to do not repeat parameters it's appropriate to move general parameters in one file and environment-specific settings to separate ones, separate file for each settings' collection.
+
+This project will help to accomplish inverse process: build configuration file by the set of configs.
+
+### Config splitting ###
+
+Web.config:
+```
+<configuration>
+  <appSettings>
+    <add key="CMSProgrammingLanguage" value="C#" />
+    <add key="BaseUri" value="@@baseurl@@" />
+  </appSettings>
+</configuration>
+```
+
+Michael.json:
+```
+{
+  "baseuri":"http://localhost"
+}
+```
+
+Scotty.json:
+```
+{
+  "baseuri":"http://website"
+}
+```
 
 ### Usage ###
 
@@ -17,7 +45,7 @@ In that situation to do not repead parameters it's appropriate to split general 
 require 'pick_and_roll'
 PickAndRoll.new().go #will look for <machine-name>.json file as custom config
 
-PickAndRoll.new('custom_configuration').go #will execute with custom_configuration.json file as custom config. Could be used for test purposes or build servers
+PickAndRoll.new('custom_configuration').go #will execute with Michael.json file as custom config.
 ```
 
 ### Configuration ###
@@ -33,7 +61,6 @@ All configuration files are in json format, everything can be configured with `.
         "*.generic.config"
     ]
 }
-
 ```
 
 `config` - path to file with global settings  
