@@ -6,7 +6,7 @@ class PickAndRoll
   MASTER_CONFIG = 'config.json'
   PARCONFIG_FILE_NAME = '.parconfig'
 
-	def initialize(config_path = '')
+  def initialize(config_path = '')
     @parconfig = read_configuration
     @config_file = config_path.to_s
   end
@@ -46,10 +46,11 @@ class PickAndRoll
 
     file_patterns.each {|file_pattern|
       Dir.glob("**/#{file_pattern}"){ |file_name|
-        File.open(file_name,'r'){ |config_file|
+        File.open(file_name,'r'){ |rolling_file|
           puts "roll file: #{file_name}"
+          content = rolling_file.read()
           File.open(file_name.gsub(/\.generic\./,'.'), 'w'){ |f|
-            f.write config_file.read().gsub(/@@([\w\.]*)@@/) {|s| find_config_value $1}
+            f.write content.gsub(/@@([\w\.]*)@@/) {|s| find_config_value $1}
           }
         }
       }
