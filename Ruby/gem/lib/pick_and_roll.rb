@@ -13,9 +13,8 @@ class PickAndRoll
   end
 
   def pick
-    master_config_name = @parconfig.has_key?('config') ? @parconfig['config'] : MASTER_CONFIG
-    master_config_path = File.join(@configs_dir, master_config_name)
-    if File.exist?(master_config_path)
+    master_config_path = File.join(@configs_dir, @parconfig.has_key?('config') ? @parconfig['config'] : MASTER_CONFIG)
+    if File.size?(master_config_path) != nil
       @config = JSON.parse(File.read(master_config_path))
       puts "pick config: #{master_config_path}"
     else
@@ -23,7 +22,7 @@ class PickAndRoll
     end
 
     custom_config_path = File.join(@configs_dir, "#{@config_file.strip.empty? ? ENV['COMPUTERNAME'] : @config_file}.json")
-    if File.exists?(custom_config_path)
+    if File.size?(custom_config_path) != nil
       @config.deep_merge!(JSON.parse(File.read(custom_config_path)))
       puts "pick config: #{custom_config_path}"
     end
@@ -64,7 +63,11 @@ class PickAndRoll
   end
 
   def find_config_value(key)
-    key.split('.').inject(@config) { |config, name| config[name] }
+    result = key.split('.').inject(@config) { |config, name| config.nil? ? nil : config[name] }
+    if result.nil?
+      puts "ERROR: cannot find value for parameter #{key}"
+    end
+    result
   end
 
   def go
