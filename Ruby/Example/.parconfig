@@ -3,7 +3,8 @@
     "customDir": "custom",
     "files": [
         "*.generic.xml",
-        "*.generic.config"
+        "*.generic.config",
+        "non-generic/app.config"
     ]
 }
 
