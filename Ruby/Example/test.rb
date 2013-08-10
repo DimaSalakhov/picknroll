@@ -1,4 +1,4 @@
-require 'pick_and_roll'
+require '../gem/lib/pick_and_roll'
 
 puts 'Producing configs...'
 

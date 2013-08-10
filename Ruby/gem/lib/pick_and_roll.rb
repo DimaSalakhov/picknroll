@@ -2,37 +2,31 @@ require 'json'
 #require 'awesome_print'
 
 class PickAndRoll
+  CONFIGS_DIR = '_configs'
   MASTER_CONFIG = 'config.json'
   PARCONFIG_FILE_NAME = '.parconfig'
 
   def initialize(config_path = '')
     @parconfig = read_configuration
+    @configs_dir = @parconfig.has_key?('customDir') ? @parconfig['customDir'] : CONFIGS_DIR
     @config_file = config_path.to_s
   end
 
   def pick
     master_config_name = @parconfig.has_key?('config') ? @parconfig['config'] : MASTER_CONFIG
-    if File.exist?(master_config_name)
-      @config = JSON.parse(File.read(master_config_name))
-      puts "pick config: #{master_config_name}"
+    master_config_path = File.join(@configs_dir, master_config_name)
+    if File.exist?(master_config_path)
+      @config = JSON.parse(File.read(master_config_path))
+      puts "pick config: #{master_config_path}"
     else
       @config = Hash.new
     end
 
-    if @config_file.strip.empty? == false && File.exists?("#{@config_file}.json")
-      @config.deep_merge!(JSON.parse(File.read("#{@config_file}.json")))
-      puts "pick config: #{@config_file}.json"
-    else
-      custom_config = "#{ENV["COMPUTERNAME"]}.json"
-      if @parconfig.has_key?('customDir')
-        custom_config = File.join(@parconfig['customDir'], custom_config)
-      end
-      if File.exist?(custom_config)
-        @config.deep_merge!(JSON.parse(File.read(custom_config)))
-        puts "pick config: #{custom_config}"
-      end
+    custom_config_path = File.join(@configs_dir, "#{@config_file.strip.empty? ? ENV['COMPUTERNAME'] : @config_file}.json")
+    if File.exists?(custom_config_path)
+      @config.deep_merge!(JSON.parse(File.read(custom_config_path)))
+      puts "pick config: #{custom_config_path}"
     end
-
 
     if @config.empty?
       printf 'Please set configuration path or create config.json file'

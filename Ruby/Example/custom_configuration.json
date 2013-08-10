@@ -1,7 +1,0 @@
-{
-    "xunit" : {"version" : "2.3.1"},
-    "app" : {
-        "sku" : "my-custom-sku",
-        "path" : "c:/robots.txt"
-    }
-}
