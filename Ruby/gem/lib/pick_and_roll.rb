@@ -1,5 +1,4 @@
 require 'json'
-require 'deep'
 #require 'awesome_print'
 
 class PickAndRoll
