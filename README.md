@@ -7,11 +7,18 @@ Gem: <http://rubygems.org/gems/pick_and_roll>
 `gem install pick_and_roll`
 
 ## The problem ##
-When you deal with the project with more than one developer/environment, you may end up with the situation when you need different config files for different circumstances which are the same in general, but differ in some parameters like connection string.
+Michael and Scotty work on the same website.  
+Michael use url "http://localhost", Scotty - "http://website".  
+Configuration lives in repository.  
 
-In that situation to do not repeat parameters it's appropriate to move general parameters in one file and environment-specific settings to separate ones, separate file for each settings' collection.
+Basically guys have to options:  
+ 1. store 2 configuration files and duplicate common settings
+ 2. manually change url setting after checkout
 
-This project will help to accomplish inverse process: build configuration file by the set of configs.
+Their problems may be overcome with the following solution:
+ 1. Keep common settings in configuration file
+ 2. Separate distinct settings to custom files: Michael.json and Scotty.json respectively
+ 3. Build configuration result configuration file based on common and custom files on demand
 
 ### Config splitting ###
 
@@ -19,43 +26,46 @@ Web.config:
 ```
 <configuration>
   <appSettings>
-    <add key="CMSProgrammingLanguage" value="C#" />
+    <add key="Language" value="@@language@@" />
     <add key="BaseUri" value="@@baseurl@@" />
   </appSettings>
 </configuration>
 ```
 
+config.json
+```
+{ "language":"C#" }
+```
+
 Michael.json:
 ```
-{
-  "baseuri":"http://localhost"
-}
+{ "baseuri":"http://localhost" }
 ```
 
 Scotty.json:
 ```
 {
-  "baseuri":"http://website"
+    "language":"Ruby"
+    "baseuri":"http://website"
 }
 ```
 
+where *config.json* accumulates settings which is true for the majority, but should be customizable
+
 ### Usage ###
 
-```
-require 'pick_and_roll'
-PickAndRoll.new().go #will look for <machine-name>.json file as custom config
-
-PickAndRoll.new('custom_configuration').go #will execute with Michael.json file as custom config.
-```
+`PickAndRoll.new().go` - will look for *config.json* and *<machine-name>.json* file as custom config  
+or  
+`PickAndRoll.new('Scotty').go` - will look for *config.json* and execute with *Scotty.json* file as custom config, overriding *language* setting
 
 ### Configuration ###
 
-All configuration files are in json format, everything can be configured with `.parconfig` file:
+All configuration files are in json format, process can be configured with `.parconfig` file:
 
 ```
 {
+    "customDir": "_configs",
     "config": "config.json",
-    "customDir": "custom",
     "files": [
         "*.generic.xml",
         "*.generic.config"
@@ -63,12 +73,59 @@ All configuration files are in json format, everything can be configured with `.
 }
 ```
 
-`config` - path to file with global settings  
-`customDir` - path to directory with custom configurations  
-`files` - array of files to be parsed. If filename contain ".generic.", then new file without slug will be generated as a result, otherwise it will be replaced with substituted values.  
-In example:
+`customDir` - path to directory with configuration files (default: `_configs`) 
+`config` - path to file with common settings (default: `config.json`; expected to be placed inside `customDir`)  
+`files` - array of files to be parsed. If filename contain ".generic.", then new file without slug will be generated, otherwise values will be substituted in original file.  
 
-    web.generic.config -> web.generic.config + *web.config  
-    app.config -> *app.config
+### Example ###
 
+.parconfig:
+```
+{
+    "files": [
+        "*.generic.xml",
+        "*.config"
+    ]
+}
+```
+
+Web.generic.xml:
+```
+<configuration>
+    <add key="BaseUri" value="@@baseurl@@" />
+</configuration>
+```
+
+App.config:
+```
+<configuration>
+    <add key="uri" value="@@baseurl@@" />
+</configuration>
+```
+
+config.json:
+```
+{ "baseuri":"http://domain.name" }
+```
+
+Michael.json:
+```
+{ "baseuri":"http://localhost" }
+```
+
+If we run PickAndRoll on PC called *Michael* we'll get
+
+*web.generic.xml* - untouched  
+*web.xml*:
+```
+<configuration>
+    <add key="BaseUri" value="http://localhost" />
+</configuration>
+```
+*App.config*:
+```
+<configuration>
+    <add key="uri" value="http://localhost" />
+</configuration>
+```
 
