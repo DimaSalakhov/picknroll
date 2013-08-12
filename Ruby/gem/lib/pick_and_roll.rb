@@ -1,4 +1,5 @@
 require 'json'
+require 'deep'
 #require 'awesome_print'
 
 class PickAndRoll
@@ -76,30 +77,30 @@ class PickAndRoll
   end
 end
 
-class Hash
-  
-  def deep_merge!(specialized_hash)
-    return internal_deep_merge!(self, specialized_hash)
-  end
-  
-  def deep_merge(specialized_hash)
-    return internal_deep_merge!(Hash.new.replace(self), specialized_hash)
-  end
-  
-  protected
-    def internal_deep_merge!(source_hash, specialized_hash)
-      specialized_hash.each_pair do |rkey, rval|
-        if source_hash.has_key?(rkey) then
-          if rval.is_a?(Hash) and source_hash[rkey].is_a?(Hash) then
-            internal_deep_merge!(source_hash[rkey], rval)
-          elsif rval == source_hash[rkey] then
-          else
-            source_hash[rkey] = rval
-          end
-        else
-          source_hash[rkey] = rval
-        end
-      end
-      return source_hash
-    end
-end
+#class Hash
+#
+#  def deep_merge!(specialized_hash)
+#    return internal_deep_merge!(self, specialized_hash)
+#  end
+#
+#  def deep_merge(specialized_hash)
+#    return internal_deep_merge!(Hash.new.replace(self), specialized_hash)
+#  end
+#
+#  protected
+#    def internal_deep_merge!(source_hash, specialized_hash)
+#      specialized_hash.each_pair do |rkey, rval|
+#        if source_hash.has_key?(rkey) then
+#          if rval.is_a?(Hash) and source_hash[rkey].is_a?(Hash) then
+#            internal_deep_merge!(source_hash[rkey], rval)
+#          elsif rval == source_hash[rkey] then
+#          else
+#            source_hash[rkey] = rval
+#          end
+#        else
+#          source_hash[rkey] = rval
+#        end
+#      end
+#      return source_hash
+#    end
+#end
