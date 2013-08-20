@@ -2,9 +2,9 @@
     "config": "config.json",
     "customDir": "custom",
     "files": [
-        "*.generic.xml",
-        "*.generic.config",
-        "non-generic/app.config"
+        "**/*.generic.xml",
+        "**/*.generic.config",
+        "non-generic/deep-inside-tree/single.config"
     ]
 }
 

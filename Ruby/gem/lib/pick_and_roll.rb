@@ -37,7 +37,7 @@ class PickAndRoll
     file_patterns = get_file_patterns()
 
     file_patterns.each {|file_pattern|
-      Dir.glob("**/#{file_pattern}"){ |file_name|
+      Dir.glob("#{file_pattern}"){ |file_name|
         File.open(file_name,'r'){ |rolling_file|
           puts "roll file: #{file_name}"
           content = rolling_file.read()

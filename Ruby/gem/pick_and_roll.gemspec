@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name        = 'pick_and_roll'
-  s.version     = '0.9.2'
-  s.date        = '2013-08-16'
+  s.version     = '0.9.3'
+  s.date        = '2013-08-20'
   s.summary     = 'Configuration helper'
   s.description = 'Creates customizable configuration files'
   s.authors     = ["Dima Salakhov"]
