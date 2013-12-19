@@ -67,8 +67,8 @@ All configuration files are in json format, process can be configured with `.par
     "customDir": "_configs",
     "config": "config.json",
     "files": [
-        "*.generic.xml",
-        "*.generic.config"
+        "app.generic.xml",
+        "web.config"
     ]
 }
 ```
@@ -83,8 +83,8 @@ All configuration files are in json format, process can be configured with `.par
 ```
 {
     "files": [
-        "*.generic.xml",
-        "*.config"
+        "app.generic.xml",
+        "web.config"
     ]
 }
 ```
@@ -129,3 +129,4 @@ If we run PickAndRoll on PC called *Michael* we'll get
 </configuration>
 ```
 
+[![Gem Version](https://badge.fury.io/rb/pick_and_roll.png)](http://badge.fury.io/rb/pick_and_roll)
