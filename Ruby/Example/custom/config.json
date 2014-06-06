@@ -1,5 +1,6 @@
 {
     "xunit":{"version":"2.3.0", "build":"stable"},
     "moq":{"version":"3.0.0"},
-    "email" : "to@dimasalakhov.com"
+    "email" : "to@dimasalakhov.com",
+    "BuildTimestamp" : "{{#Time.now.strftime('%Y%m%d%H%M%S%L')}}"
 }
