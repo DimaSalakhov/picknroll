@@ -67,7 +67,11 @@ class PickAndRoll
     if result.nil?
       puts "ERROR: cannot find value for parameter #{key}"
     end
-    result
+    match = result ? result.match(/{{#(.*)}}/) : nil
+    if match
+      puts 'evaluating ' + match.captures[0]
+    end
+    match ? eval(match.captures[0]) : result
   end
 
   def go
